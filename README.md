@@ -21,55 +21,58 @@ There are 3 sample csv files included for each data type. These are located in /
 Users are able to select from a dropdown menu the samples associated and also have the ability to upload their own csv files to pull data from.
 Once a dataset is selected the dataset field will become editable.
 
-### Controls
 
-Right Click: Drag
+## Controls
+
+'Right Click: Drag'
 Left Click: Grab and Spin
 
-### Input Values
+
+# Input Values
 
 Each Data Structure takes a different format as follows in the dataset field
 
-**Array**
+### Array
 Accepts single line comma seperated values --1,2,3,4,5--
 Will accept ints or strings.
 Will not accept new line.
 
-**Linked List**
+### Linked List
 Accepts single line comma seperated values --1,2,3,4,5--
 Will accept ints or strings.
 Will not accept new line.
 
-**2-D Grid**
+### 2-D Grid
 Accepts multiple line comma sperated values --1,2,3,4,5--
 Will accept ints or strings.
 Will accept new line.
 
-**Binary Tree**
+### Binary Tree
 Accepts key value pairs --A,B-- --B,C--
 Will accept ints or strings.
 Will accept new line.
 
-**Graph**
+### Graph
 Accepts key value pairs --A,B-- --B,C--
 Will accept ints or strings.
 Will accept new line.
 
-### Return Values and Formating  
+
+## Return Values and Formating  
 
 What happens in the flask post route for each data structure
 
-**Array**
+### Array
 Splits the data at every "," and appends all values to return_array 
 
-**Linked List**
+### Linked List
 Splits the data at every "," and appends all values to return_array
 
-**2-D Grid**
+### 2-D Grid
 Splits the data at every "\r\n"  and appends all vlaues to csv_split
 Iterates through the csv_split and splits at every "," creating an array of arrays
 
-**Binary Tree**
+### Binary Tree
 Splits the data at every "\r\n"  and appends all vlaues to csv_split
 Iterates through the csv_split and splits at every "," creating an array of key value pairs
 Iterates through return_array searching for unique node ids
@@ -78,7 +81,7 @@ I then interate through return_array again using the indicies dictonary to repla
 Unique_vals is then returned this will make sure there can only be one node.
 Connections is the array of replaced indexs this will be used to gererate the arrows.
 
-**Graph**
+### Graph
 Splits the data at every "\r\n"  and appends all vlaues to csv_split
 Iterates through the csv_split and splits at every "," creating an array of key value pairs
 Iterates through return_array searching for unique node ids
@@ -88,7 +91,7 @@ Unique_vals is then returned this will make sure there can only be one node.
 Connections is the array of replaced indexs this will be used to gererate the arrows.
 
 
-### Cube and Sphere Generation and Placement
+## Cube and Sphere Generation and Placement
 
 addNewCube and addNewSphere each take 5 parameters 
 * Scene 
@@ -100,7 +103,7 @@ addNewCube and addNewSphere each take 5 parameters
 Once data is recieved from flask, jinja loops are used to generate the objects.
 Each Data structure has a different placement algorithm as follows
 
-**Array**
+### Array
 
 {% for item in array %}
 addNewCube(scene,"Array[{{loop.index - 1 }}]","{{item}}", x, 0);
@@ -110,7 +113,7 @@ x+= 1;
 Simple x + 1 to move the cubes to the right
 
 
-**Linked List**
+### Linked List
 
 {% for item in array %}
 addNewCube(scene,"Node{{loop.index - 1 }}","{{item}}", x, 0);
@@ -127,7 +130,7 @@ drawLines(cubes, [{{num}},{{num}} + 1]);
 Connect every square in the array with a line.
 
 
-**2-D Grid**
+### 2-D Grid
 
 {% for row in grid %}    
   {% for col in row %}
@@ -143,7 +146,7 @@ Connect every square in the array with a line.
 Double for loop to generate grid y - 2 to move down 1 row 
 
 
-**Binary Tree**
+### Binary Tree
 
 var x = 0;  
 var y =  0; 
@@ -177,9 +180,10 @@ else if( x > right_corner){
 
 Initial node is placed at 0,0.
 
-Holder represents how far out the second level of nodes will be placed. 
-This is the squareroot of the number of items in the unique_vals array.
-This is nessacary to make sure there is enough room on the the bottom level for no overlap.
+Holder represents how far out the second level of nodes will be placed.  
+This is the squareroot of the number of items in the unique_vals array.  
+This is nessacary to make sure there is enough room on the the bottom level for no overlap.  
+
 
 Left_corner and Right_corner will be our edges. set to Holder value and Negative Holder value
 
@@ -205,7 +209,7 @@ drawArrows takes 3 arguments
 * index of target of arrow
 
 
-**Graph**
+### Graph
 
 var x = 0;
 var y = 0;

@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Binary Tree
+{% endblock %}
+
+{% block main %}
+<div id="canvas"> 
+  <div style="position: absolute; top: 20%; left: 2%; z-index: 1; justify-content: left;" class="flex-col">
+    <form action="/binary_tree" method="post">
+      
+      <h1 class="m-1" style="color: #DF740C; font-size: 60px; font-weight: 900;" >Binary Tree</h1>
+      
+      <div id="dataDiv" style="display:block;">  
+        <div class="m-1" ><label for="table"  id="about" style="background-color: transparent; color: #DF740C; text-align: left; margin-top: 0; ">About Me:</label></div>
+        <textarea type="text" id="table" disabled name="table" class="m-1" rows="4" cols="35" style="background-color: transparent; color: #DF740C; text-align: left; font-size: 14px; white-space: pre-wrap;">- Useful for hierarchical data structures.&#13;&#10;- Efficient searching and sorting.&#13;&#10;- More complex to implement than some other data structures.</textarea>
+        </div> 
+      <div>        
+      
+      <button id="csvButton" class="btn btn-outline-secondary dropdown-toggle m-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Dataset</button>
+      <ul class="dropdown-menu">
+        <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_binary_3.csv'), showDataField()">sample_binary_3</a></li>
+        <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_binary_4.csv'), showDataField()">sample_binary_4</a></li>
+        <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_binary_5.csv'), showDataField()">sample_binary_5</a></li>    
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" onclick="showUploadField(), showDataField()">Upload .csv</a></li>
+      </ul>
+
+      </div>
+      <button id="stopButton" class="btn btn-outline-secondary m-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="hideGoButton()" style="display: inline-block; margin-bottom: 10px;">Stop</button>
+      <button id="goButton" type="submit" onclick="showStopField()" class="btn btn-outline-secondary " disabled style="display: inline-block;">GO!</button>
+      
+      <div id="uploadDiv" style="display:none;">         
+        <input type="file" accept=".csv" id="csvfile" class="m-1">
+      </div>  
+    
+    </form>
+  </div>
+</div>
+
+
+<script src="/static/script.js"></script>  
+<script>
+// Initialize Sizes
+const sizes = {
+width: window.innerWidth,
+height: window.innerHeight
+}
+
+// Initialize 3js Scene
+const scene = new THREE.Scene(); 
+const camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+
+
+// Initalize 3js Controls
+renderer.setSize(sizes.width, sizes.height);
+document.getElementById("canvas").appendChild(renderer.domElement);
+var controls = new THREE.TrackballControls(camera, renderer.domElement);
+controls.rotateSpeed = 1.0;
+controls.zoomSpeed = 1.2;
+controls.panSpeed = 0.8;
+
+// variables for spheres
+const spheres = [];
+let rotation = 0.04;
+let rotatining  = true;
+
+// Initialize 3js Background
+const loader = new THREE.TextureLoader();
+const bgtexture = loader.load('./static/bg_files/bg2.jpg.jpg');
+scene.background = bgtexture;
+
+
+//Camera Position
+camera.position.z = 10;
+
+//Variables for Placement Algorithm
+var x = 0;  
+var y =  0; 
+var holder = Math.ceil(Math.sqrt({{array|length}}));
+var level = holder / 2;
+var left_corner = -holder;
+var right_corner = holder;
+var inital_node = true; 
+
+// Generate and Place spheres
+{% for item in array %}
+
+addNewSphere(scene,"{{item}}","{{item}}", x, y);
+x+=holder* 2;
+
+if(inital_node == true){
+  x = left_corner;
+  y -= 2;
+  inital_node = false;
+}
+else if( x > right_corner){
+  holder = holder/2;
+  left_corner = left_corner - level;
+  right_corner = right_corner + level;
+  level = level / 2; 
+  x = left_corner;
+  y -=2;
+}  
+
+{% endfor %}
+
+//Generate Arrows
+{% for row in connections %}
+
+  drawArrows(spheres,[{{ row[0] }},{{ row[1] }}]);
+  
+{% endfor %}
+
+
+// Resize window
+window.addEventListener('resize', () =>{
+    console.log(window.innerWidth);
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;  
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix;
+  renderer.setSize(sizes.width, sizes.height);
+
+})
+
+// Initalize Animate Loop
+function animate() {
+requestAnimationFrame(animate);
+controls.update();
+
+for (let i = 0; i < spheres.length; i++) {
+spheres[i].rotation.y += rotation;}
+renderer.render(scene, camera);
+}
+
+// Stop/Start Animate Loop
+const stopButton = document.getElementById("stopButton");
+stopButton.addEventListener("click", function () {
+if(rotation == 0){
+  rotation = .04;
+  document.getElementById('stopButton').innerHTML = "Stop";
+}
+else{
+  rotation = 0;
+  document.getElementById('stopButton').innerHTML = "Start";
+}
+
+for (let i = 0; i < cubes.length; i++) {
+cubes[i].rotation.x = rotation;
+} 
+});
+
+// Start the animation
+const requestID = requestAnimationFrame(animate);
+
+</script> 
+{% endblock %}

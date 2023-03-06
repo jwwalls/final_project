@@ -24,8 +24,9 @@ Once a dataset is selected the dataset field will become editable.
 
 ## Controls
 
-'Right Click: Drag'
-Left Click: Grab and Spin
+'Right Click: Drag'  
+Left Click: Grab and Spin  
+
 
 
 # Input Values

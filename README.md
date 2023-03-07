@@ -113,7 +113,7 @@ Once data is recieved from flask, jinja loops are used to generate the objects.
 Each Data structure has a different placement algorithm as follows
 
 ### **Array**
-```
+```javascript
 {% for item in array %}
 addNewCube(scene,"Array[{{loop.index - 1 }}]","{{item}}", x, 0);
 x+= 1;
@@ -123,7 +123,7 @@ Simple x + 1 to move the cubes to the right
 
 
 ### **Linked List**
-```
+```javascript
 {% for item in array %}
 addNewCube(scene,"Node{{loop.index - 1 }}","{{item}}", x, 0);
 x+= 1.5;
@@ -131,7 +131,7 @@ x+= 1.5;
 ```
 Simple x + 1.5 to move cubes to the right and give space for lines
 
-```
+```javascript
 {% for num in range(array|length - 1)  %}
 drawLines(cubes, [{{num}},{{num}} + 1]);
 {% endfor %}
@@ -140,7 +140,7 @@ Connect every square in the array with a line.
 
 
 ### **2-D Grid**
-```
+```javascript
 {% for row in grid %}    
   {% for col in row %}
         
@@ -156,7 +156,7 @@ Double for loop to generate grid y - 2 to move down 1 row
 
 
 ### **Binary Tree**
-```
+```javascript
 var x = 0;  
 var y =  0; 
 var holder = Math.ceil(Math.sqrt({{array|length}}));
@@ -205,7 +205,7 @@ Once this happens. Level gets added to our new edges. X is set to the new Left_c
 
 Holder and Level are both divided by half at each level.
 
-```
+```javascript
 {% for row in connections %}
 
   drawArrows(spheres,[{{ row[0] }},{{ row[1] }}]);
@@ -219,7 +219,7 @@ drawArrows takes 3 arguments
 
 
 ### **Graph**
-```
+```javascript
 var x = 0;
 var y = 0;
 var counter = 0;

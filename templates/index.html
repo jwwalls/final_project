@@ -1,158 +1,220 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %} Landing {% endblock %} {% block
+main %}
 
-{% block title %}
-    Landing
-{% endblock %}
-
-{% block main %}
-
-<div id="canvas"> 
-  <div style="position: absolute; top: 20%; left: 2%; z-index: 1; justify-content: left;" class="flex-col">     
+<div id="canvas">
+  <div id="landing" class="flex-col">
     <form action="/array" method="post">
-      <h1 class="m-1" style="color: #DF740C; font-size: 60px; font-weight: 900;" >Getting Started</h1>
-      
-      <div id="dataDiv" style="display:block;">  
-        <div class="m-1" ><label for="table"  id="about" style="background-color: transparent; color: #DF740C; text-align: left; margin-top: 0;">Controls:</label></div>
-        <textarea type="text" id="table" disabled name="table" class="m-1" rows="4" cols="35" style="background-color: transparent; color: #DF740C; text-align: left; font-size: 14px; white-space: pre-wrap;">- Edit this field to visulaze your own data structures! Must select dataset first.&#13;&#10;- Right Click: Drag&#13;&#10;- Left Click: Grab</textarea>
-      </div> 
-      
-      <div>        
-        <button id="csvButton" class="btn btn-outline-secondary dropdown-toggle m-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Dataset</button>
+      <h1 class="m-1" id="title">Getting Started</h1>
+
+      <div id="dataDiv" style="display: block">
+        <div class="m-1">
+          <label for="table" id="about">Controls:</label>
+        </div>
+        <textarea
+          type="text"
+          id="table"
+          disabled
+          name="table"
+          class="m-1"
+          rows="4"
+          cols="35"
+        >
+- Edit this field to visulaze your own data structures! Must select dataset first.&#13;&#10;- Right Click: Drag&#13;&#10;- Left Click: Grab</textarea
+        >
+      </div>
+
+      <div>
+        <button
+          id="csvButton"
+          class="btn btn-outline-secondary dropdown-toggle m-1"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Select Dataset
+        </button>
         <ul class="dropdown-menu">
-          <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_5.csv'), showDataField()">sample_5</a></li>
-          <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_10.csv'), showDataField()">sample_10</a></li>
-          <li><a id="csv_file" class="dropdown-item" href="#" onclick="loadCSV('sample_20.csv'), showDataField()">sample_20</a></li>    
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#" onclick="showUploadField(), showDataField()">Upload .csv</a></li>
+          <li>
+            <a
+              id="csv_file"
+              class="dropdown-item"
+              href="#"
+              onclick="loadCSV('sample_5.csv'), showDataField()"
+              >sample_5</a
+            >
+          </li>
+          <li>
+            <a
+              id="csv_file"
+              class="dropdown-item"
+              href="#"
+              onclick="loadCSV('sample_10.csv'), showDataField()"
+              >sample_10</a
+            >
+          </li>
+          <li>
+            <a
+              id="csv_file"
+              class="dropdown-item"
+              href="#"
+              onclick="loadCSV('sample_20.csv'), showDataField()"
+              >sample_20</a
+            >
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+              onclick="showUploadField(), showDataField()"
+              >Upload .csv</a
+            >
+          </li>
         </ul>
       </div>
-      
-      <button id="stopButton" class="btn btn-outline-secondary m-1" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="hideGoButton()" style="display: inline-block; margin-bottom: 10px;">Stop</button>
-      <button id="goButton" type="submit" onclick="" class="btn btn-outline-secondary " disabled style="display: inline-block;">GO!</button>
-      
-      <div id="uploadDiv" style="display:none;">    
-      <input type="file" accept=".csv" id="csvfile" class="m-1">
-      </div>
 
+      <button
+        id="stopButton"
+        class="btn btn-outline-secondary m-1"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        onclick="hideGoButton()"
+        style="display: inline-block; margin-bottom: 10px"
+      >
+        Stop
+      </button>
+      <button
+        id="goButton"
+        type="submit"
+        onclick=""
+        class="btn btn-outline-secondary"
+        disabled
+        style="display: inline-block"
+      >
+        GO!
+      </button>
+
+      <div id="uploadDiv" style="display: none">
+        <input type="file" accept=".csv" id="csvfile" class="m-1" />
+      </div>
     </form>
   </div>
 </div>
-    
 
-<script src="/static/script.js"></script>  
+<script src="/static/script.js"></script>
 <script>
-// Initialize 3js Scene
-const scene = new THREE.Scene(); 
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
+  // Initialize 3js Scene
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
 
 
-// Initalize 3js Controls
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById("canvas").appendChild(renderer.domElement);
-var controls = new THREE.TrackballControls(camera, renderer.domElement);
-controls.rotateSpeed = 1.0;
-controls.zoomSpeed = 1.2;
-controls.panSpeed = 0.8;
+  // Initalize 3js Controls
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.getElementById("canvas").appendChild(renderer.domElement);
+  var controls = new THREE.TrackballControls(camera, renderer.domElement);
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
 
-// variables for cubes
-var x = ({{array|length}}* 1.5 /2  ) * -1; 
-const cubes = [];
-let rotation = 0.005;
-let rotatining  = true;
+  // variables for cubes
+  var x = ({{array|length}}* 1.5 /2  ) * -1;
+  const cubes = [];
+  let rotation = 0.005;
+  let rotatining  = true;
 
-// Initialize 3js Background
-const loader = new THREE.TextureLoader();
-const bgtexture = loader.load('./static/bg_files/bg2.jpg.jpg');
-scene.background = bgtexture;
+  // Initialize 3js Background
+  const loader = new THREE.TextureLoader();
+  const bgtexture = loader.load('./static/bg_files/bg2.jpg.jpg');
+  scene.background = bgtexture;
 
-// Initialize 3js Interaction
-let mouseDown = false;
-let selectedCube = null;
-let lastMouseX = 0;
-let lastMouseY = 0;
+  // Initialize 3js Interaction
+  let mouseDown = false;
+  let selectedCube = null;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
 
-// Mousedown Raycaster to select cube
-renderer.domElement.addEventListener('mousedown', (event) => {
-mouseDown = true;
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-raycaster.setFromCamera(mouse, camera);
+  // Mousedown Raycaster to select cube
+  renderer.domElement.addEventListener('mousedown', (event) => {
+  mouseDown = true;
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
 
-// Filter out non-cube objects
-const cubesI = scene.children.filter(obj => obj.userData.isCube); 
-const intersects = raycaster.intersectObjects(cubesI, true);
-if (intersects.length > 0) {
-selectedCube = intersects[0].object.parent;
-}
-});
+  // Filter out non-cube objects
+  const cubesI = scene.children.filter(obj => obj.userData.isCube);
+  const intersects = raycaster.intersectObjects(cubesI, true);
+  if (intersects.length > 0) {
+  selectedCube = intersects[0].object.parent;
+  }
+  });
 
-// Spin the cubes
-renderer.domElement.addEventListener('mousemove', (event) => {
-if (mouseDown && selectedCube !== null) {
-const deltaX = event.clientX - lastMouseX;
-const deltaY = event.clientY - lastMouseY;
-const deltaRotationQuaternion = new THREE.Quaternion()
-.setFromEuler(new THREE.Euler(
-deltaY * (Math.PI / 180),
-deltaX * (Math.PI / 180),
-0,
-'XYZ'
-));
-selectedCube.quaternion.multiplyQuaternions(deltaRotationQuaternion, selectedCube.quaternion);
-}
-lastMouseX = event.clientX;
-lastMouseY = event.clientY;
-});
+  // Spin the cubes
+  renderer.domElement.addEventListener('mousemove', (event) => {
+  if (mouseDown && selectedCube !== null) {
+  const deltaX = event.clientX - lastMouseX;
+  const deltaY = event.clientY - lastMouseY;
+  const deltaRotationQuaternion = new THREE.Quaternion()
+  .setFromEuler(new THREE.Euler(
+  deltaY * (Math.PI / 180),
+  deltaX * (Math.PI / 180),
+  0,
+  'XYZ'
+  ));
+  selectedCube.quaternion.multiplyQuaternions(deltaRotationQuaternion, selectedCube.quaternion);
+  }
+  lastMouseX = event.clientX;
+  lastMouseY = event.clientY;
+  });
 
-// Deselect Cube
-renderer.domElement.addEventListener('mouseup', () => {
-mouseDown = false;
-selectedCube = null;
-});
-
-
-//Camera Position
-camera.position.z = 10;
-
-// Generate Cube
-addNewCube(scene,"Welcome!","Spin", x, 0);
+  // Deselect Cube
+  renderer.domElement.addEventListener('mouseup', () => {
+  mouseDown = false;
+  selectedCube = null;
+  });
 
 
+  //Camera Position
+  camera.position.z = 10;
+
+  // Generate Cube
+  addNewCube(scene,"Welcome!","Spin", x, 0);
 
 
-// Initalize Animate Loop
-function animate() {
-requestAnimationFrame(animate);
-controls.update();
-for (let i = 0; i < cubes.length; i++) {
-cubes[i].rotation.x += rotation; 
-cubes[i].rotation.y += rotation;
-cubes[i].rotation.z += rotation;}
-renderer.render(scene, camera);
-}
 
-// Stop/Start Animate Loop
-const stopButton = document.getElementById("stopButton");
-stopButton.addEventListener("click", function () {
-if(rotation == 0){
-  rotation = .005;
-  document.getElementById('stopButton').innerHTML = "Stop";
-}
-else{
-  rotation = 0;
-  document.getElementById('stopButton').innerHTML = "Start";
-}
 
-for (let i = 0; i < cubes.length; i++) {
-cubes[i].rotation.x = rotation;
-} 
-});
+  // Initalize Animate Loop
+  function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  for (let i = 0; i < cubes.length; i++) {
+  cubes[i].rotation.x += rotation;
+  cubes[i].rotation.y += rotation;
+  cubes[i].rotation.z += rotation;}
+  renderer.render(scene, camera);
+  }
 
-// Start the animation
-const requestID = requestAnimationFrame(animate);
+  // Stop/Start Animate Loop
+  const stopButton = document.getElementById("stopButton");
+  stopButton.addEventListener("click", function () {
+  if(rotation == 0){
+    rotation = .005;
+    document.getElementById('stopButton').innerHTML = "Stop";
+  }
+  else{
+    rotation = 0;
+    document.getElementById('stopButton').innerHTML = "Start";
+  }
 
-</script> 
+  for (let i = 0; i < cubes.length; i++) {
+  cubes[i].rotation.x = rotation;
+  }
+  });
+
+  // Start the animation
+  const requestID = requestAnimationFrame(animate);
+</script>
 {% endblock %}

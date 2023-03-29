@@ -3,7 +3,7 @@
 
 By Jeremie Walls
 
-A 3-D visualzation tool to make learning Data Strutures more fun and interactable.
+A 3-D visualzation tool to help make learning Data Strutures fun and interactive.
 
 ## Technologies Used
 
@@ -16,79 +16,91 @@ A 3-D visualzation tool to make learning Data Strutures more fun and interactabl
 
 ## Description 
 
-This browser application allows users to Visualize five different data structures Array, Linked List, 2-D Grid, Binary Tree and Graph.
-There are 3 sample csv files included for each data type. These are located in /static/samples
-Users are able to select from a dropdown menu the samples associated and also have the ability to upload their own csv files to pull data from.
+This browser application allows users to Visualize five different data structures Array, Linked List, 2-D Grid, Binary Tree and Graph.  
+
+There are 3 sample csv files included for each data type. These are located in /static/samples  
+
+Users are able to select from a dropdown menu the samples associated and also have the ability to upload their own csv files to pull data from.  
+
 Once a dataset is selected the dataset field will become editable.
 
-### Controls
 
-Right Click: Drag
-Left Click: Grab and Spin
 
-### Input Values
+## Controls
+
+Right Click: Drag  
+Left Click: Grab and Spin  
+
+
+
+
+# Input Values
 
 Each Data Structure takes a different format as follows in the dataset field
 
-**Array**
-Accepts single line comma seperated values --1,2,3,4,5--
-Will accept ints or strings.
+### **Array**
+Accepts single line comma seperated values --1,2,3,4,5--  
+Will accept ints or strings.  
 Will not accept new line.
 
-**Linked List**
-Accepts single line comma seperated values --1,2,3,4,5--
-Will accept ints or strings.
+### **Linked List**
+Accepts single line comma seperated values --1,2,3,4,5--  
+Will accept ints or strings.  
 Will not accept new line.
 
-**2-D Grid**
-Accepts multiple line comma sperated values --1,2,3,4,5--
-Will accept ints or strings.
+### **2-D Grid**
+Accepts multiple line comma sperated values --1,2,3,4,5--  
+Will accept ints or strings.  
 Will accept new line.
 
-**Binary Tree**
-Accepts key value pairs --A,B-- --B,C--
-Will accept ints or strings.
+### **Binary Tree**
+Accepts key value pairs --A,B-- --B,C--  
+Will accept ints or strings.  
 Will accept new line.
 
-**Graph**
-Accepts key value pairs --A,B-- --B,C--
-Will accept ints or strings.
+### **Graph**
+Accepts key value pairs --A,B-- --B,C--  
+Will accept ints or strings.  
 Will accept new line.
 
-### Return Values and Formating  
+
+## Return Values and Formating  
 
 What happens in the flask post route for each data structure
 
-**Array**
-Splits the data at every "," and appends all values to return_array 
+### **Array**
+* Splits the data at every "," and appends all values to return_array 
 
-**Linked List**
-Splits the data at every "," and appends all values to return_array
+### **Linked List**
+* Splits the data at every "," and appends all values to return_array
 
-**2-D Grid**
-Splits the data at every "\r\n"  and appends all vlaues to csv_split
-Iterates through the csv_split and splits at every "," creating an array of arrays
+### **2-D Grid**
+* Splits the data at every "\r\n"  and appends all vlaues to csv_split
+* Iterates through the csv_split and splits at every "," creating an array of arrays
 
-**Binary Tree**
-Splits the data at every "\r\n"  and appends all vlaues to csv_split
-Iterates through the csv_split and splits at every "," creating an array of key value pairs
-Iterates through return_array searching for unique node ids
-When an Id is found it is added to unique_vals array and also add to a dictonary that keeps track of which index that node was placed in the unique_vals array.
-I then interate through return_array again using the indicies dictonary to replace all of the node names with their indexs in the unique_vals array
-Unique_vals is then returned this will make sure there can only be one node.
-Connections is the array of replaced indexs this will be used to gererate the arrows.
+### **Binary Tree**
+* Splits the data at every "\r\n"  and appends all vlaues to csv_split
+* Iterates through the csv_split and splits at every "," creating an array of key value pairs  
 
-**Graph**
-Splits the data at every "\r\n"  and appends all vlaues to csv_split
-Iterates through the csv_split and splits at every "," creating an array of key value pairs
-Iterates through return_array searching for unique node ids
-When an Id is found it is added to unique_vals array and also add to a dictonary that keeps track of which index that node was placed in the unique_vals array.
-I then interate through return_array again using the indicies dictonary to replace all of node names with their indexs in the unique_vals array
-Unique_vals is then returned this will make sure there can only be one node.
-Connections is the array of replaced indexs this will be used to gererate the arrows.
+* Iterates through return_array searching for unique node ids  
+* When an Id is found it is added to unique_vals array and also add to a dictonary that keeps track of which index that node was placed in the unique_vals array.  
+
+* We then interate through return_array again using the indicies dictonary to replace all of the node names with their indexs in the unique_vals array.  
+
+* Unique_vals is then returned this will make sure there can only be one node.  
+* Connections is the array of replaced indexs this will be used to gererate the arrows.
+
+### **Graph**
+* Splits the data at every "\r\n"  and appends all vlaues to csv_split
+* Iterates through the csv_split and splits at every "," creating an array of key value pairs
+* Iterates through return_array searching for unique node ids
+* When an Id is found it is added to unique_vals array and also add to a dictonary that keeps track of which index that node was placed in the unique_vals array.
+* I then interate through return_array again using the indicies dictonary to replace all of node names with their indexs in the unique_vals array
+* Unique_vals is then returned this will make sure there can only be one node.
+* Connections is the array of replaced indexs this will be used to gererate the arrows.
 
 
-### Cube and Sphere Generation and Placement
+## Cube and Sphere Generation and Placement
 
 addNewCube and addNewSphere each take 5 parameters 
 * Scene 
@@ -100,35 +112,35 @@ addNewCube and addNewSphere each take 5 parameters
 Once data is recieved from flask, jinja loops are used to generate the objects.
 Each Data structure has a different placement algorithm as follows
 
-**Array**
-
+### **Array**
+```javascript
 {% for item in array %}
 addNewCube(scene,"Array[{{loop.index - 1 }}]","{{item}}", x, 0);
 x+= 1;
 {%endfor%}
-
+```
 Simple x + 1 to move the cubes to the right
 
 
-**Linked List**
-
+### **Linked List**
+```javascript
 {% for item in array %}
 addNewCube(scene,"Node{{loop.index - 1 }}","{{item}}", x, 0);
 x+= 1.5;
 {%endfor%}
-
+```
 Simple x + 1.5 to move cubes to the right and give space for lines
 
-
+```javascript
 {% for num in range(array|length - 1)  %}
 drawLines(cubes, [{{num}},{{num}} + 1]);
 {% endfor %}
-
+```
 Connect every square in the array with a line.
 
 
-**2-D Grid**
-
+### **2-D Grid**
+```javascript
 {% for row in grid %}    
   {% for col in row %}
         
@@ -139,12 +151,12 @@ Connect every square in the array with a line.
   y-=2;
   index_x += 1;
 {% endfor %}
-
+```
 Double for loop to generate grid y - 2 to move down 1 row 
 
 
-**Binary Tree**
-
+### **Binary Tree**
+```javascript
 var x = 0;  
 var y =  0; 
 var holder = Math.ceil(Math.sqrt({{array|length}}));
@@ -173,13 +185,14 @@ else if( x > right_corner){
   y -=2;
 }  
 {% endfor %}
-
+```
 
 Initial node is placed at 0,0.
 
-Holder represents how far out the second level of nodes will be placed. 
-This is the squareroot of the number of items in the unique_vals array.
-This is nessacary to make sure there is enough room on the the bottom level for no overlap.
+Holder represents how far out the second level of nodes will be placed.  
+This is the squareroot of the number of items in the unique_vals array.  
+This is nessacary to make sure there is enough room on the the bottom level for no overlap.  
+
 
 Left_corner and Right_corner will be our edges. set to Holder value and Negative Holder value
 
@@ -192,21 +205,21 @@ Once this happens. Level gets added to our new edges. X is set to the new Left_c
 
 Holder and Level are both divided by half at each level.
 
-
+```javascript
 {% for row in connections %}
 
   drawArrows(spheres,[{{ row[0] }},{{ row[1] }}]);
   
 {% endfor %}
-
+```
 drawArrows takes 3 arguments
 * the array of spheres
 * index of orgin of arrow
 * index of target of arrow
 
 
-**Graph**
-
+### **Graph**
+```javascript
 var x = 0;
 var y = 0;
 var counter = 0;
@@ -244,7 +257,7 @@ var y_val = -2;
     
   } 
 {% endfor %}
-
+```
 
 The main point of this algorithm is to evenly space out the nodes as best as possible. Its really just me playing around with numbers to get a pleasent effect.
 It takes slow steps down and to the right then after about 16 nodes it gets reset above the intial graph and cuts through the middle again without overlapping. 

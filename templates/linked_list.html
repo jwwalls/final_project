@@ -104,19 +104,11 @@ main %}
 
 <script src="/static/script.js"></script>
 <script>
-
-
-
   // variables for cubes
   var x = ({{array|length}}* 1.5 /2  ) * -1;
   const cubes = [];
   let rotation = 0.005;
   let rotatining  = true;
-
-
-
-
-
 
   // Generate Cubes
   {% for item in array %}
@@ -124,12 +116,10 @@ main %}
   x+= 1.5;
   {%endfor%}
 
-
+  //Generate Lines
   {% for num in range(array|length - 1)  %}
   drawLines(cubes, [{{num}},{{num}} + 1]);
   {% endfor %}
-
-
 
   // Initalize Animate Loop
   function animate() {
@@ -156,8 +146,6 @@ main %}
     cubes[i].rotation.x = rotation;
   }
   });
-
-
 
   // Start the animation
   const requestID = requestAnimationFrame(animate);

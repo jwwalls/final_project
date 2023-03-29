@@ -106,14 +106,12 @@
   const cubes = [];
   let rotation = 0.005;
   let rotatining  = true;
- 
 
   // Generate Cubes
   {% for item in array %}
   addNewCube(scene,"Array[{{loop.index - 1 }}]","{{item}}", x, 0);
   x+= 1;
   {%endfor%}
-
 
   // Initalize Animate Loop
   function animate() {
@@ -123,7 +121,7 @@
   cubes[i].rotation.x += rotation;}
   renderer.render(scene, camera);
   }
-
+  
   // Stop/Start Animate Loop
   const stopButton = document.getElementById("stopButton");
   stopButton.addEventListener("click", function () {

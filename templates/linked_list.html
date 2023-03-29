@@ -104,19 +104,8 @@ main %}
 
 <script src="/static/script.js"></script>
 <script>
-  // Initialize 3js Scene
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer();
 
 
-  // Initalize 3js Controls
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.getElementById("canvas").appendChild(renderer.domElement);
-  var controls = new THREE.TrackballControls(camera, renderer.domElement);
-  controls.rotateSpeed = 1.0;
-  controls.zoomSpeed = 1.2;
-  controls.panSpeed = 0.8;
 
   // variables for cubes
   var x = ({{array|length}}* 1.5 /2  ) * -1;
@@ -124,61 +113,10 @@ main %}
   let rotation = 0.005;
   let rotatining  = true;
 
-  // Initialize 3js Background
-  const loader = new THREE.TextureLoader();
-  const bgtexture = loader.load('./static/bg_files/bg2.jpg.jpg');
-  scene.background = bgtexture;
-
-  // Initialize 3js Interaction
-  let mouseDown = false;
-  let selectedCube = null;
-  let lastMouseX = 0;
-  let lastMouseY = 0;
-
-  // Mousedown Raycaster to select cube
-  renderer.domElement.addEventListener('mousedown', (event) => {
-  mouseDown = true;
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-
-  // Filter out non-cube objects
-  const cubesI = scene.children.filter(obj => obj.userData.isCube);
-  const intersects = raycaster.intersectObjects(cubesI, true);
-  if (intersects.length > 0) {
-  selectedCube = intersects[0].object.parent;
-  }
-  });
-
-  // Spin the cubes
-  renderer.domElement.addEventListener('mousemove', (event) => {
-  if (mouseDown && selectedCube !== null) {
-  const deltaX = event.clientX - lastMouseX;
-  const deltaY = event.clientY - lastMouseY;
-  const deltaRotationQuaternion = new THREE.Quaternion()
-  .setFromEuler(new THREE.Euler(
-  deltaY * (Math.PI / 180),
-  deltaX * (Math.PI / 180),
-  0,
-  'XYZ'
-  ));
-  selectedCube.quaternion.multiplyQuaternions(deltaRotationQuaternion, selectedCube.quaternion);
-  }
-  lastMouseX = event.clientX;
-  lastMouseY = event.clientY;
-  });
-
-  // Deselect Cube
-  renderer.domElement.addEventListener('mouseup', () => {
-  mouseDown = false;
-  selectedCube = null;
-  });
 
 
-  //Camera Position
-  camera.position.z = 10;
+
+
 
   // Generate Cubes
   {% for item in array %}

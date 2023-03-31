@@ -19,11 +19,16 @@ def array():
         return render_template("array.html", array=[1,2,3])
     
     else:
-        array = request.form.get("table")
-        csv_split = array.split(",")        
+        array = request.form.get("table") 
+        csv_split = array.split(",")          
+         
         return_array = []
-        for row in csv_split:            
-            return_array.append(row)   
+        for row in csv_split:    
+            if "\r\n" in row:
+                continue   
+            else:
+                return_array.append(row)   
+            
         return render_template("array.html", array=return_array)
     
 @app.route("/linked_list", methods=["GET", "POST"])
@@ -36,8 +41,11 @@ def linked_list():
         csv_split = array.split(",")        
         return_array = []
         
-        for row in csv_split:            
-            return_array.append(row)   
+        for row in csv_split:    
+            if "\r\n" in row:
+                continue   
+            else:
+                return_array.append(row)   
         return render_template("linked_list.html", array=return_array)
     
 
